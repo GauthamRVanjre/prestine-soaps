@@ -17,7 +17,7 @@ model Product{
   createdDate DateTime @default(now())
   soapProductId String? @db.ObjectId @unique
   soapProduct soapProductItems? @relation(fields: [soapProductId],references: [id])
-  chocolateProductId String @db.ObjectId @unique
+  chocolateProductId String? @db.ObjectId @unique
   chocolateProduct chocolateProductItems? @relation(fields: [chocolateProductId],references: [id])
   productOrdersId String[] @db.ObjectId
   productOrders Orders[] @relation(fields: [productOrdersId],references: [id])
@@ -25,43 +25,43 @@ model Product{
 
 model soapProductItems{
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  soapBase String
-  soapBasePrice String
-  EO String
-  EOPrice String
-  FO String
-  FOPrice String
-  oils String
-  oilPrice String
-  clay String
-  clayPrice String
-  Bottles String
-  BottlePrice String
-  wrappingPapers String
-  wrappingPapersPrice String
-  packingBags String
-  packingBagsPrice String
+  soapBase String?
+  soapBasePrice String?
+  EO String?
+  EOPrice String?
+  FO String?
+  FOPrice String?
+  oils String?
+  oilPrice String?
+  clay String?
+  clayPrice String?
+  Bottles String?
+  BottlePrice String?
+  wrappingPapers String?
+  wrappingPapersPrice String?
+  packingBags String?
+  packingBagsPrice String?
   productId Product?
 }
 
 model chocolateProductItems{
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  chocolateBags String
-  chocolateBagsPrice String
-  EO String
-  EOPrice String
-  dryFruits String
-  dryFruitsPrice String
-  milkMaid String
-  milkMaidPrice String
-  coconutPowder String
-  coconutPowderPrice String
-  wrappingPaper String
-  wrappingPaperPrice String
-  chocolateMould String
-  chocolateMouldPrice String
-  packingBags String
-  packingBagsPrice String
+  chocolateBags String?
+  chocolateBagsPrice String?
+  chocolateEO String?
+  chocolateEOPrice String?
+  dryFruits String?
+  dryFruitsPrice String?
+  milkMaid String?
+  milkMaidPrice String?
+  coconutPowder String?
+  coconutPowderPrice String?
+  wrappingPaper String?
+  wrappingPaperPrice String?
+  chocolateMould String?
+  chocolateMouldPrice String?
+  chocolatePackingBags String?
+  chocolatePackingBagsPrice String?
   productId Product?
 }
 
