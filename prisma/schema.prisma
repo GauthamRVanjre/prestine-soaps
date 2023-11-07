@@ -56,8 +56,8 @@ model chocolateProductItems{
   milkMaidPrice String?
   coconutPowder String?
   coconutPowderPrice String?
-  wrappingPaper String?
-  wrappingPaperPrice String?
+  chocolateWrappingPaper String?
+  chocolateWrappingPaperPrice String?
   chocolateMould String?
   chocolateMouldPrice String?
   chocolatePackingBags String?
