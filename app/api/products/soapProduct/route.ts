@@ -62,7 +62,7 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    return new Response(JSON.stringify(soapItems), { status: 200 });
+    return new Response(JSON.stringify(product), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ message: `${error}` }), {
       status: 500,
