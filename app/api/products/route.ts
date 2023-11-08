@@ -120,3 +120,22 @@ export async function POST(req: Request, res: Response) {
     await prisma.$disconnect();
   }
 }
+
+export async function GET(req: Request, res: Response) {
+  try {
+    await prisma.$connect();
+
+    const products = await prisma.product.findMany({
+      include: {
+        soapProduct: true,
+        chocolateProduct: true,
+      },
+    });
+
+    return new Response(JSON.stringify(products), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify(error), { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+}
