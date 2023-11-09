@@ -15,6 +15,7 @@ model Product{
   productName String @unique
   productCategory Category
   createdDate DateTime @default(now())
+  costPrice String?
   soapProductId String? @db.ObjectId @unique
   soapProduct soapProductItems? @relation(fields: [soapProductId],references: [id])
   chocolateProductId String? @db.ObjectId @unique
@@ -56,8 +57,8 @@ model chocolateProductItems{
   milkMaidPrice String?
   coconutPowder String?
   coconutPowderPrice String?
-  wrappingPaper String?
-  wrappingPaperPrice String?
+  chocolateWrappingPaper String?
+  chocolateWrappingPaperPrice String?
   chocolateMould String?
   chocolateMouldPrice String?
   chocolatePackingBags String?
