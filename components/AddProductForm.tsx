@@ -14,6 +14,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productForm } from "@/lib/productFormValidator";
 import { z } from "zod";
+import CustomFormField from "./CustomFormField";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import CustomDropdownMenu from "./CustomDropdownMenu";
 
 const AddProductForm = () => {
   const form = useForm<z.infer<typeof productForm>>({
@@ -30,24 +41,22 @@ const AddProductForm = () => {
     console.log(values);
   }
 
+  const categoryValue = form.watch("productCategory");
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="productName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+        <CustomFormField
+          formControl={form.control}
+          formName="productName"
+          formLabel="Enter product Name"
+          inputPlaceholder="soap name..."
+        />
+
+        <CustomDropdownMenu
+          formControl={form.control}
+          formName="productCategory"
+          formLabel="Enter product Category"
+          selectPlaceholder="Please select appropriate category.."
         />
         <Button type="submit">Submit</Button>
       </form>
