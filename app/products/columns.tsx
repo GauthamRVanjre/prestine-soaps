@@ -33,6 +33,18 @@ export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "productCategory",
     header: "Product Category",
+    cell: ({ row }) => {
+      const product = row.original;
+      if (product.productCategory === "Chocolate") {
+        return (
+          <div className="bg-red-950 text-white p-2 w-20">
+            {product.productCategory}
+          </div>
+        );
+      } else {
+        return <div>{product.productCategory}</div>;
+      }
+    },
   },
 
   {

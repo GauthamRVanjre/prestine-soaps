@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Products } from "../types/types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import AddProductDialog from "@/components/AddProductDialog";
 
 export default function ProductsPage() {
   const columnsLength = columns.length;
@@ -26,13 +27,20 @@ export default function ProductsPage() {
   }, []);
 
   return (
-    <div className="container mx-auto py-10">
-      <DataTable
-        columns={columns}
-        data={products}
-        loading={isLoading}
-        columnsLength={columnsLength}
-      />
-    </div>
+    <>
+      <div className="container">
+        <div className="float-right my-14 mx-8">
+          <AddProductDialog />
+        </div>
+        <div className="container mx-auto py-10">
+          <DataTable
+            columns={columns}
+            data={products}
+            loading={isLoading}
+            columnsLength={columnsLength}
+          />
+        </div>
+      </div>
+    </>
   );
 }
