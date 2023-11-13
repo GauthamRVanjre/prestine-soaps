@@ -6,7 +6,7 @@ import { DataTable } from "./data-table";
 import AddProductDialog from "@/components/AddProductDialog";
 import { useQuery } from "@tanstack/react-query";
 
-export default async function ProductsPage() {
+export default function ProductsPage() {
   const columnsLength = columns.length;
 
   const { data, isLoading, isError } = useQuery({
