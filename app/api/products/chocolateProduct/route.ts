@@ -3,8 +3,6 @@ import prisma from "@/prisma/prisma";
 type RequestBody = {
   productName: string;
 
-  chocolateBags: string;
-  chocolateBagsPrice: string;
   chocolateEO: string;
   chocolateEOPrice: string;
   dryFruits: string;
@@ -29,8 +27,6 @@ export async function POST(req: Request, res: Response) {
 
     const chocolateItems = await prisma.chocolateProductItems.create({
       data: {
-        chocolateBags: values?.chocolateBags,
-        chocolateBagsPrice: values?.chocolateBagsPrice,
         chocolateEO: values?.chocolateEO,
         chocolateEOPrice: values?.chocolateEOPrice,
         dryFruits: values?.dryFruits,
