@@ -47,8 +47,6 @@ model soapProductItems{
 
 model chocolateProductItems{
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  chocolateBags String?
-  chocolateBagsPrice String?
   chocolateEO String?
   chocolateEOPrice String?
   dryFruits String?

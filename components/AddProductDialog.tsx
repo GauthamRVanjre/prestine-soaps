@@ -15,9 +15,7 @@ const AddProductDialog = () => {
     <>
       <Dialog>
         <DialogTrigger>
-          <Button variant="ghost" className="border ">
-            Add new Product
-          </Button>
+          <div className="border p-2 hover:bg-gray-200">Add new Product</div>
         </DialogTrigger>
         <DialogContent>
           <AddProductForm />

@@ -20,8 +20,6 @@ type SoapProductItems = {
 };
 
 type ChocolateProductItems = {
-  chocolateBags: string;
-  chocolateBagsPrice: string;
   chocolateEO: string;
   chocolateEOPrice: string;
   dryFruits: string;
@@ -63,8 +61,6 @@ export async function POST(req: Request, res: Response) {
     if (values.productCategory === "Chocolate") {
       chocolateProduct = await prisma.chocolateProductItems.create({
         data: {
-          chocolateBags: values?.chocolateProductItems?.chocolateBags,
-          chocolateBagsPrice: values?.chocolateProductItems?.chocolateBagsPrice,
           chocolateEO: values?.chocolateProductItems?.chocolateEO,
           chocolateEOPrice: values?.chocolateProductItems?.chocolateEOPrice,
           dryFruits: values?.chocolateProductItems?.dryFruits,

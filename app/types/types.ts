@@ -10,8 +10,6 @@ export type Products = {
 
 export type chocolateProductTypes = {
   id: string;
-  chocolateBags: string;
-  chocolateBagsPrice: string;
   chocolateEO: string;
   chocolateEOPrice: string;
   dryFruits: string;
