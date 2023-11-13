@@ -4,27 +4,21 @@ import { Products } from "../types/types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import AddProductDialog from "@/components/AddProductDialog";
+import { useQuery } from "@tanstack/react-query";
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
   const columnsLength = columns.length;
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const getProducts = async () => {
-    try {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
       const response = await fetch("/api/products");
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      const res = await response.json();
+      return res;
+    },
+  });
 
-  useEffect(() => {
-    getProducts();
-  }, []);
+  console.log(data);
 
   return (
     <>
@@ -33,12 +27,16 @@ export default function ProductsPage() {
           <AddProductDialog />
         </div>
         <div className="container mx-auto py-10">
-          <DataTable
-            columns={columns}
-            data={products}
-            loading={isLoading}
-            columnsLength={columnsLength}
-          />
+          {!isError ? (
+            <DataTable
+              columns={columns}
+              data={data}
+              loading={isLoading}
+              columnsLength={columnsLength}
+            />
+          ) : (
+            <div>{isError}</div>
+          )}
         </div>
       </div>
     </>
