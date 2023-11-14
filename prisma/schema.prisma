@@ -18,59 +18,31 @@ model Product{
   costPrice Int?
   soapProductItems  Json?        // Store product items as JSON
   chocolateProductItems Json?
-  productOrdersId String[] @db.ObjectId
-  productOrders Orders[] @relation(fields: [productOrdersId],references: [id])
+  // productOrdersId String[] @db.ObjectId
+  // productOrders Orders[] @relation(fields: [productOrdersId],references: [id])
+  orderItems  OrderItem[]
 }
 
-// model soapProductItems{
-//   id String @id @default(auto()) @map("_id") @db.ObjectId
-//   soapBase String?
-//   soapBasePrice String?
-//   EO String?
-//   EOPrice String?
-//   FO String?
-//   FOPrice String?
-//   oils String?
-//   oilPrice String?
-//   clay String?
-//   clayPrice String?
-//   Bottles String?
-//   BottlePrice String?
-//   wrappingPapers String?
-//   wrappingPapersPrice String?
-//   packingBags String?
-//   packingBagsPrice String?
-//   productId Product?
-// }
-
-// model chocolateProductItems{
-//   id String @id @default(auto()) @map("_id") @db.ObjectId
-//   chocolateEO String?
-//   chocolateEOPrice String?
-//   dryFruits String?
-//   dryFruitsPrice String?
-//   milkMaid String?
-//   milkMaidPrice String?
-//   coconutPowder String?
-//   coconutPowderPrice String?
-//   chocolateWrappingPaper String?
-//   chocolateWrappingPaperPrice String?
-//   chocolateMould String?
-//   chocolateMouldPrice String?
-//   chocolatePackingBags String?
-//   chocolatePackingBagsPrice String?
-//   productId Product?
-// }
 
 enum Category{
   Soap
   Chocolate
 }
 
-model Orders{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  productNameId String[] @db.ObjectId
-  productNames Product[] @relation(fields: [productNameId], references: [id])
+model Orders {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  customerName  String
+  createdAt     DateTime @default(now())
+  orderItems    OrderItem[]
 }
+
+model OrderItem {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity    Int
+  orderId     String @db.ObjectId
+  productId   String @db.ObjectId
+  order       Orders @relation(fields: [orderId], references: [id])
+  product     Product @relation(fields: [productId], references: [id])
+}
+
 
