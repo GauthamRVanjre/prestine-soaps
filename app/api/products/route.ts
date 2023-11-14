@@ -54,7 +54,6 @@ type productData = {
 
 export async function POST(req: Request, res: Response) {
   const values: RequestBody = await req.json();
-  console.log(values);
 
   try {
     await prisma.$connect();
