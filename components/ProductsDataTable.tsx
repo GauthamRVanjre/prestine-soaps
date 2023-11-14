@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Products } from "../types/types";
-import { columns } from "./columns";
+import { Products } from "../app/types/types";
+import { columns } from "./ProductTableColumns";
 import { DataTable } from "./data-table";
 import AddProductDialog from "@/components/AddProductDialog";
 import { useQuery } from "@tanstack/react-query";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function ProductsPage() {
+export default function ProductsDataTable() {
   const columnsLength = columns.length;
 
   const { data, isLoading, isError } = useQuery({
@@ -20,11 +21,11 @@ export default function ProductsPage() {
 
   return (
     <>
-      <div className="container">
-        <div className="float-right my-14 mx-8">
+      <div className="container -ml-12 mt-12">
+        <div className="float-right my-5 mx-2">
           <AddProductDialog />
         </div>
-        <div className="container mx-auto py-10">
+        <div className="container mx-auto">
           {!isError ? (
             <DataTable
               columns={columns}

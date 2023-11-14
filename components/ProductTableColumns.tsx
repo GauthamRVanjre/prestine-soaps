@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Products } from "../types/types";
+import { Products } from "../app/types/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
