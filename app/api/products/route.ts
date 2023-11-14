@@ -19,7 +19,7 @@ type SoapProductItems = {
   packingBagsPrice: string;
 };
 
-type ChocolateProductItems = {
+type chocolateProducts = {
   chocolateEO: string;
   chocolateEOPrice: string;
   dryFruits: string;
@@ -40,7 +40,7 @@ type RequestBody = {
   productName: string;
   productCategory: "Chocolate" | "Soap";
   soapProductItems?: SoapProductItems;
-  chocolateProductItems?: ChocolateProductItems;
+  chocolateProducts?: chocolateProducts;
 };
 
 type productType = {
@@ -61,25 +61,23 @@ export async function POST(req: Request, res: Response) {
     if (values.productCategory === "Chocolate") {
       chocolateProduct = await prisma.chocolateProductItems.create({
         data: {
-          chocolateEO: values?.chocolateProductItems?.chocolateEO,
-          chocolateEOPrice: values?.chocolateProductItems?.chocolateEOPrice,
-          dryFruits: values?.chocolateProductItems?.dryFruits,
-          dryFruitsPrice: values?.chocolateProductItems?.dryFruitsPrice,
-          milkMaid: values?.chocolateProductItems?.milkMaid,
-          milkMaidPrice: values?.chocolateProductItems?.milkMaidPrice,
-          coconutPowder: values?.chocolateProductItems?.coconutPowder,
-          coconutPowderPrice: values?.chocolateProductItems?.coconutPowderPrice,
+          chocolateEO: values?.chocolateProducts?.chocolateEO,
+          chocolateEOPrice: values?.chocolateProducts?.chocolateEOPrice,
+          dryFruits: values?.chocolateProducts?.dryFruits,
+          dryFruitsPrice: values?.chocolateProducts?.dryFruitsPrice,
+          milkMaid: values?.chocolateProducts?.milkMaid,
+          milkMaidPrice: values?.chocolateProducts?.milkMaidPrice,
+          coconutPowder: values?.chocolateProducts?.coconutPowder,
+          coconutPowderPrice: values?.chocolateProducts?.coconutPowderPrice,
           chocolateWrappingPaper:
-            values?.chocolateProductItems?.chocolateWrappingPaper,
+            values?.chocolateProducts?.chocolateWrappingPaper,
           chocolateWrappingPaperPrice:
-            values?.chocolateProductItems?.chocolateWrappingPaperPrice,
-          chocolateMould: values?.chocolateProductItems?.chocolateMould,
-          chocolateMouldPrice:
-            values?.chocolateProductItems?.chocolateMouldPrice,
-          chocolatePackingBags:
-            values?.chocolateProductItems?.chocolatePackingBags,
+            values?.chocolateProducts?.chocolateWrappingPaperPrice,
+          chocolateMould: values?.chocolateProducts?.chocolateMould,
+          chocolateMouldPrice: values?.chocolateProducts?.chocolateMouldPrice,
+          chocolatePackingBags: values?.chocolateProducts?.chocolatePackingBags,
           chocolatePackingBagsPrice:
-            values?.chocolateProductItems?.chocolatePackingBagsPrice,
+            values?.chocolateProducts?.chocolatePackingBagsPrice,
         },
       });
     }
@@ -106,12 +104,21 @@ export async function POST(req: Request, res: Response) {
       });
     }
 
+    console.log("soap product", soapProduct);
+    console.log("chocolate product", chocolateProduct);
     let product;
+    product = await prisma.product.create({
+      data: {
+        productName: values.productName,
+        productCategory: values.productCategory,
+      },
+    });
     if (values.productCategory === "Chocolate") {
-      product = await prisma.product.create({
+      await prisma.product.update({
+        where: {
+          id: product.id,
+        },
         data: {
-          productName: values.productName,
-          productCategory: values.productCategory,
           chocolateProduct: {
             connect: {
               id: chocolateProduct?.id,
@@ -120,10 +127,11 @@ export async function POST(req: Request, res: Response) {
         },
       });
     } else {
-      product = await prisma.product.create({
+      await prisma.product.update({
+        where: {
+          id: product.id,
+        },
         data: {
-          productName: values.productName,
-          productCategory: values.productCategory,
           soapProduct: {
             connect: {
               id: soapProduct?.id,

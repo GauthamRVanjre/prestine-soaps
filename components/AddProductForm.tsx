@@ -1,29 +1,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productForm } from "@/lib/productFormValidator";
 import { z } from "zod";
 import CustomFormField from "./CustomFormField";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+
 import CustomDropdownMenu from "./CustomDropdownMenu";
 import { ScrollArea } from "./ui/scroll-area";
 
@@ -72,17 +55,41 @@ const AddProductForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof productForm>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const categoryValue = form.watch("productCategory");
+  async function onSubmit(values: z.infer<typeof productForm>) {
     console.log(values);
+    if (categoryValue === "Soap") {
+      try {
+        const response = await fetch("/api/products/soapProduct", {
+          method: "POST",
+          body: JSON.stringify(values),
+        });
+        if (response.ok) {
+          console.log("all good");
+        } else {
+          console.log("wrong");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await fetch("/api/products/chocolateProduct", {
+          method: "POST",
+          body: JSON.stringify(values),
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
-  const categoryValue = form.watch("productCategory");
   return (
     <ScrollArea className="h-[400px] rounded-md border p-6 overflow-x-auto overflow-y-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2">
           <CustomFormField
             formControl={form.control}
             formName="productName"

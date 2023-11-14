@@ -1,3 +1,4 @@
+import { Products } from "@/app/types/types";
 import prisma from "@/prisma/prisma";
 
 type RequestBody = {
@@ -20,27 +21,31 @@ type RequestBody = {
 };
 
 export async function POST(req: Request, res: Response) {
-  const values: RequestBody = await req.json();
+  const values: Products = await req.json();
+  console.log("values in api", values);
 
   try {
     await prisma.$connect();
 
     const chocolateItems = await prisma.chocolateProductItems.create({
       data: {
-        chocolateEO: values?.chocolateEO,
-        chocolateEOPrice: values?.chocolateEOPrice,
-        dryFruits: values?.dryFruits,
-        dryFruitsPrice: values?.dryFruitsPrice,
-        milkMaid: values?.milkMaid,
-        milkMaidPrice: values?.milkMaidPrice,
-        coconutPowder: values?.coconutPowder,
-        coconutPowderPrice: values?.coconutPowderPrice,
-        chocolateWrappingPaper: values?.chocolateWrappingPaper,
-        chocolateWrappingPaperPrice: values?.chocolateWrappingPaperPrice,
-        chocolateMould: values?.chocolateMould,
-        chocolateMouldPrice: values?.chocolateMouldPrice,
-        chocolatePackingBags: values?.chocolatePackingBags,
-        chocolatePackingBagsPrice: values?.chocolatePackingBagsPrice,
+        chocolateEO: values?.chocolateProducts.chocolateEO,
+        chocolateEOPrice: values?.chocolateProducts.chocolateEOPrice,
+        dryFruits: values?.chocolateProducts.dryFruits,
+        dryFruitsPrice: values?.chocolateProducts.dryFruitsPrice,
+        milkMaid: values?.chocolateProducts.milkMaid,
+        milkMaidPrice: values?.chocolateProducts.milkMaidPrice,
+        coconutPowder: values?.chocolateProducts.coconutPowder,
+        coconutPowderPrice: values?.chocolateProducts.coconutPowderPrice,
+        chocolateWrappingPaper:
+          values?.chocolateProducts.chocolateWrappingPaper,
+        chocolateWrappingPaperPrice:
+          values?.chocolateProducts.chocolateWrappingPaperPrice,
+        chocolateMould: values?.chocolateProducts.chocolateMould,
+        chocolateMouldPrice: values?.chocolateProducts.chocolateMouldPrice,
+        chocolatePackingBags: values?.chocolateProducts.chocolatePackingBags,
+        chocolatePackingBagsPrice:
+          values?.chocolateProducts.chocolatePackingBagsPrice,
       },
     });
 

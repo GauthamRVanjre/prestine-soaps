@@ -18,8 +18,6 @@ export default function ProductsPage() {
     },
   });
 
-  console.log(data);
-
   return (
     <>
       <div className="container">

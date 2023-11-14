@@ -4,8 +4,8 @@ export type Products = {
   productCategory: string;
   createdDate: string;
   costPrice: string;
-  chocolateProduct: chocolateProductTypes;
-  soapProduct: soapProductTypes;
+  chocolateProducts: chocolateProductTypes;
+  soapProductItems: soapProductTypes;
 };
 
 export type chocolateProductTypes = {

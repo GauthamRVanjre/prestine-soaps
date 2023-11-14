@@ -1,9 +1,12 @@
+import { Products } from "@/app/types/types";
 import prisma from "@/prisma/prisma";
 
 type RequestBody = {
   productName: string;
 
   // soap product items
+  // soapProductItems: {
+  // };
   soapBase: string;
   soapBasePrice: string;
   EO: string;
@@ -28,41 +31,26 @@ export async function POST(req: Request, res: Response) {
   try {
     await prisma.$connect();
 
-    const soapItems = await prisma.soapProductItems.create({
-      data: {
-        soapBase: values?.soapBase,
-        soapBasePrice: values?.soapBasePrice,
-        EO: values?.EO,
-        EOPrice: values?.EOPrice,
-        FO: values?.FO,
-        FOPrice: values?.FOPrice,
-        oils: values?.oils,
-        oilPrice: values?.oilPrice,
-        clay: values?.clay,
-        clayPrice: values?.clayPrice,
-        Bottles: values?.Bottles,
-        BottlePrice: values?.BottlePrice,
-        wrappingPapers: values?.wrappingPapers,
-        wrappingPapersPrice: values?.wrappingPapersPrice,
-        packingBags: values?.packingBags,
-        packingBagsPrice: values?.packingBagsPrice,
-      },
-    });
+    const result = await prisma.$transaction(async (tx) => {
+      // Create soap product items within the transaction
+      const soapItems = await tx.soapProductItems.create({
+        data: values,
+      });
 
-    // creating a product
-    const product = await prisma.product.create({
-      data: {
-        productName: values?.productName,
-        productCategory: "Soap",
-        soapProduct: {
-          connect: {
-            id: soapItems.id,
-          },
+      // Create product within the transaction
+      const product = await tx.product.create({
+        data: {
+          productName: values.productName,
+          productCategory: "Soap",
+          soapProductId: soapItems.id,
         },
-      },
+      });
+
+      // Return the result of the transaction
+      return product;
     });
 
-    return new Response(JSON.stringify(product), { status: 200 });
+    return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ message: `${error}` }), {
       status: 500,
