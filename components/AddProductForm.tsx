@@ -4,7 +4,7 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productForm } from "@/lib/productFormValidator";
-import { z } from "zod";
+import { number, z } from "zod";
 import CustomFormField from "./CustomFormField";
 
 import CustomDropdownMenu from "./CustomDropdownMenu";
@@ -18,71 +18,87 @@ const AddProductForm = () => {
       productCategory: "",
       soapProductItems: {
         soapBase: "",
-        soapBasePrice: "",
+        soapBasePrice: 0, // Changed to 0
         EO: "",
-        EOPrice: "",
+        EOPrice: 0, // Changed to 0
         FO: "",
-        FOPrice: "",
+        FOPrice: 0, // Changed to 0
         oils: "",
-        oilPrice: "",
+        oilPrice: 0, // Changed to 0
         clay: "",
-        clayPrice: "",
+        clayPrice: 0, // Changed to 0
         Bottles: "",
-        BottlePrice: "",
+        BottlePrice: 0, // Changed to 0
         wrappingPapers: "",
-        wrappingPapersPrice: "",
+        wrappingPapersPrice: 0, // Changed to 0
         packingBags: "",
-        packingBagsPrice: "",
+        packingBagsPrice: 0, // Changed to 0
       },
-      chocolateProducts: {
+      chocolateProductsItems: {
         chocolateBags: "",
-        chocolateBagsPrice: "",
+        chocolateBagsPrice: 0, // Changed to 0
         chocolateEO: "",
-        chocolateEOPrice: "",
+        chocolateEOPrice: 0, // Changed to 0
         dryFruits: "",
-        dryFruitsPrice: "",
+        dryFruitsPrice: 0, // Changed to 0
         milkMaid: "",
-        milkMaidPrice: "",
+        milkMaidPrice: 0, // Changed to 0
         coconutPowder: "",
-        coconutPowderPrice: "",
+        coconutPowderPrice: 0, // Changed to 0
         chocolateWrappingPaper: "",
-        chocolateWrappingPaperPrice: "",
+        chocolateWrappingPaperPrice: 0, // Changed to 0
         chocolateMould: "",
-        chocolateMouldPrice: "",
+        chocolateMouldPrice: 0, // Changed to 0
         chocolatePackingBags: "",
-        chocolatePackingBagsPrice: "",
+        chocolatePackingBagsPrice: 0, // Changed to 0
       },
     },
   });
 
   const categoryValue = form.watch("productCategory");
+
   async function onSubmit(values: z.infer<typeof productForm>) {
-    console.log(values);
+    let costPrice: number = 0;
+
     if (categoryValue === "Soap") {
-      try {
-        const response = await fetch("/api/products/soapProduct", {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-        if (response.ok) {
-          console.log("all good");
-        } else {
-          console.log("wrong");
-        }
-      } catch (error) {
-        console.log(error);
+      costPrice +=
+        values.soapProductItems.BottlePrice +
+        values.soapProductItems.EOPrice +
+        values.soapProductItems.FOPrice +
+        values.soapProductItems.oilPrice +
+        values.soapProductItems.clayPrice +
+        values.soapProductItems.BottlePrice +
+        values.soapProductItems.wrappingPapersPrice +
+        values.soapProductItems.packingBagsPrice +
+        values.soapProductItems.soapBasePrice;
+    } else if (categoryValue === "Chocolate") {
+      costPrice +=
+        values.chocolateProductsItems.chocolateBagsPrice +
+        values.chocolateProductsItems.chocolateEOPrice +
+        values.chocolateProductsItems.dryFruitsPrice +
+        values.chocolateProductsItems.milkMaidPrice +
+        values.chocolateProductsItems.coconutPowderPrice +
+        values.chocolateProductsItems.chocolateWrappingPaperPrice +
+        values.chocolateProductsItems.chocolateMouldPrice +
+        values.chocolateProductsItems.chocolatePackingBagsPrice;
+    }
+
+    const valuesToSend = {
+      ...values,
+      costPrice: costPrice, // Replace calculateCostPrice with your actual calculation logic
+    };
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
+        body: JSON.stringify(valuesToSend),
+      });
+      if (response.ok) {
+        console.log("product added successfully");
+      } else {
+        console.log("product not added successfully");
       }
-    } else {
-      try {
-        const response = await fetch("/api/products/chocolateProduct", {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
+    } catch (error) {
+      console.log("something wnet wrong");
     }
   }
 
@@ -117,6 +133,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.soapBasePrice"
                 formLabel="Enter soapBasePrice Name"
                 inputPlaceholder="soapBasePrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -129,6 +146,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.EOPrice"
                 formLabel="Enter EOPrice Name"
                 inputPlaceholder="EOPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -141,6 +159,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.FOPrice"
                 formLabel="Enter FOPrice Name"
                 inputPlaceholder="FOPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -153,6 +172,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.oilPrice"
                 formLabel="Enter oilPrice Name"
                 inputPlaceholder="oilPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -165,6 +185,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.clayPrice"
                 formLabel="Enter clayPrice Name"
                 inputPlaceholder="clayPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -177,6 +198,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.BottlePrice"
                 formLabel="Enter BottlePrice Name"
                 inputPlaceholder="BottlePrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -189,6 +211,7 @@ const AddProductForm = () => {
                 formName="soapProductItems.wrappingPapersPrice"
                 formLabel="Enter wrappingPapersPrice Name"
                 inputPlaceholder="wrappingPapersPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
@@ -201,105 +224,88 @@ const AddProductForm = () => {
                 formName="soapProductItems.packingBagsPrice"
                 formLabel="Enter packingBagsPrice Name"
                 inputPlaceholder="packingBagsPrice name..."
+                type="number"
               />
             </>
           ) : (
             <>
               <CustomFormField
                 formControl={form.control}
-                formName="chocolateBags"
-                formLabel="Enter chocolateBags Name"
-                inputPlaceholder="chocolateBags name..."
-              />
-              <CustomFormField
-                formControl={form.control}
-                formName="chocolateBagsPrice"
-                formLabel="Enter chocolateBagsPrice Name"
-                inputPlaceholder="chocolateBagsPrice name..."
-              />
-              <CustomFormField
-                formControl={form.control}
-                formName="chocolateEO"
-                formLabel="Enter chocolateEO Name"
-                inputPlaceholder="chocolateEO name..."
-              />
-              <CustomFormField
-                formControl={form.control}
-                formName="chocolateEOPrice"
-                formLabel="Enter chocolateEOPrice Name"
-                inputPlaceholder="chocolateEOPrice name..."
-              />
-              <CustomFormField
-                formControl={form.control}
-                formName="dryFruits"
+                formName="chocolateProductsItems.dryFruits"
                 formLabel="Enter dryFruits Name"
                 inputPlaceholder="dryFruits name..."
               />
               <CustomFormField
                 formControl={form.control}
-                formName="dryFruitsPrice"
+                formName="chocolateProductsItems.dryFruitsPrice"
                 formLabel="Enter dryFruitsPrice Name"
                 inputPlaceholder="dryFruitsPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
-                formName="milkMaid"
+                formName="chocolateProductsItems.milkMaid"
                 formLabel="Enter milkMaid Name"
                 inputPlaceholder="milkMaid name..."
               />
               <CustomFormField
                 formControl={form.control}
-                formName="milkMaidPrice"
+                formName="chocolateProductsItems.milkMaidPrice"
                 formLabel="Enter milkMaidPrice Name"
                 inputPlaceholder="milkMaidPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
-                formName="coconutPowder"
+                formName="chocolateProductsItems.coconutPowder"
                 formLabel="Enter coconutPowder Name"
                 inputPlaceholder="coconutPowder name..."
               />
               <CustomFormField
                 formControl={form.control}
-                formName="coconutPowderPrice"
+                formName="chocolateProductsItems.coconutPowderPrice"
                 formLabel="Enter coconutPowderPrice Name"
                 inputPlaceholder="coconutPowderPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
-                formName="chocolateWrappingPaper"
+                formName="chocolateProductsItems.chocolateWrappingPaper"
                 formLabel="Enter chocolateWrappingPaper Name"
                 inputPlaceholder="chocolateWrappingPaper name..."
               />
               <CustomFormField
                 formControl={form.control}
-                formName="chocolateWrappingPaperPrice"
+                formName="chocolateProductsItems.chocolateWrappingPaperPrice"
                 formLabel="Enter chocolateWrappingPaperPrice Name"
                 inputPlaceholder="chocolateWrappingPaperPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
-                formName="chocolateMould"
+                formName="chocolateProductsItems.chocolateMould"
                 formLabel="Enter chocolateMould Name"
                 inputPlaceholder="chocolateMould name..."
               />
               <CustomFormField
                 formControl={form.control}
-                formName="chocolateMouldPrice"
+                formName="chocolateProductsItems.chocolateMouldPrice"
                 formLabel="Enter chocolateMouldPrice Name"
                 inputPlaceholder="chocolateMouldPrice name..."
+                type="number"
               />
               <CustomFormField
                 formControl={form.control}
-                formName="chocolatePackingBags"
+                formName="chocolateProductsItems.chocolatePackingBags"
                 formLabel="Enter chocolatePackingBags Name"
                 inputPlaceholder="chocolatePackingBags name..."
               />
               <CustomFormField
                 formControl={form.control}
-                formName="chocolatePackingBagsPrice"
+                formName="chocolateProductsItems.chocolatePackingBagsPrice"
                 formLabel="Enter chocolatePackingBagsPrice Name"
                 inputPlaceholder="chocolatePackingBagsPrice name..."
+                type="number"
               />
             </>
           )}

@@ -19,7 +19,7 @@ type SoapProductItems = {
   packingBagsPrice: number; // Changed to number
 };
 
-type ChocolateProductItems = {
+type chocolateProductsItems = {
   chocolateEO: string;
   chocolateEOPrice: number; // Changed to number
   dryFruits: string;
@@ -40,25 +40,34 @@ type RequestBody = {
   productName: string;
   productCategory: "Chocolate" | "Soap";
   soapProductItems?: SoapProductItems;
-  chocolateProductItems?: ChocolateProductItems;
+  chocolateProductsItems?: chocolateProductsItems;
+  costPrice: number;
+};
+
+type productData = {
+  productName: string;
+  productCategory: "Chocolate" | "Soap";
+  soapProductItems?: SoapProductItems;
+  chocolateProductItems?: chocolateProductsItems;
   costPrice: number;
 };
 
 export async function POST(req: Request, res: Response) {
   const values: RequestBody = await req.json();
+  console.log(values);
 
   try {
     await prisma.$connect();
 
-    let productData: RequestBody = {
+    let productData: productData = {
       productName: values.productName,
       productCategory: values.productCategory,
       costPrice: values.costPrice,
     };
     if (values.productCategory === "Soap") {
       productData.soapProductItems = values.soapProductItems;
-    } else {
-      productData.chocolateProductItems = values.chocolateProductItems;
+    } else if (values.productCategory === "Chocolate") {
+      productData.chocolateProductItems = values.chocolateProductsItems;
     }
 
     // Create product

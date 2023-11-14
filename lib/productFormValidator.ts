@@ -2,40 +2,40 @@ import { z } from "zod";
 
 const soapProductItemsSchema = z.object({
   soapBase: z.string(),
-  soapBasePrice: z.string(),
+  soapBasePrice: z.number(), // Changed to number
   EO: z.string(),
-  EOPrice: z.string(),
+  EOPrice: z.number(), // Changed to number
   FO: z.string(),
-  FOPrice: z.string(),
+  FOPrice: z.number(), // Changed to number
   oils: z.string(),
-  oilPrice: z.string(),
+  oilPrice: z.number(), // Changed to number
   clay: z.string(),
-  clayPrice: z.string(),
+  clayPrice: z.number(), // Changed to number
   Bottles: z.string(),
-  BottlePrice: z.string(),
+  BottlePrice: z.number(), // Changed to number
   wrappingPapers: z.string(),
-  wrappingPapersPrice: z.string(),
+  wrappingPapersPrice: z.number(), // Changed to number
   packingBags: z.string(),
-  packingBagsPrice: z.string(),
+  packingBagsPrice: z.number(), // Changed to number
 });
 
 const chocolateProductItemsSchema = z.object({
   chocolateBags: z.string(),
-  chocolateBagsPrice: z.string(),
+  chocolateBagsPrice: z.number(), // Changed to number
   chocolateEO: z.string(),
-  chocolateEOPrice: z.string(),
+  chocolateEOPrice: z.number(), // Changed to number
   dryFruits: z.string(),
-  dryFruitsPrice: z.string(),
+  dryFruitsPrice: z.number(), // Changed to number
   milkMaid: z.string(),
-  milkMaidPrice: z.string(),
+  milkMaidPrice: z.number(), // Changed to number
   coconutPowder: z.string(),
-  coconutPowderPrice: z.string(),
+  coconutPowderPrice: z.number(), // Changed to number
   chocolateWrappingPaper: z.string(),
-  chocolateWrappingPaperPrice: z.string(),
+  chocolateWrappingPaperPrice: z.number(), // Changed to number
   chocolateMould: z.string(),
-  chocolateMouldPrice: z.string(),
+  chocolateMouldPrice: z.number(), // Changed to number
   chocolatePackingBags: z.string(),
-  chocolatePackingBagsPrice: z.string(),
+  chocolatePackingBagsPrice: z.number(), // Changed to number
 });
 
 export const productForm = z.object({
@@ -45,5 +45,5 @@ export const productForm = z.object({
   soapProductItems: soapProductItemsSchema,
 
   //   chocolate product items
-  chocolateProducts: chocolateProductItemsSchema,
+  chocolateProductsItems: chocolateProductItemsSchema,
 });

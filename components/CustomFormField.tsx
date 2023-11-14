@@ -13,12 +13,14 @@ interface CustomFormFieldProps {
   formName: string;
   formLabel: string;
   inputPlaceholder: string;
+  type?: string;
 }
 const CustomFormField: React.FC<CustomFormFieldProps> = ({
   formControl,
   formLabel,
   formName,
   inputPlaceholder,
+  type,
 }) => {
   return (
     <>
@@ -29,7 +31,19 @@ const CustomFormField: React.FC<CustomFormFieldProps> = ({
           <FormItem>
             <FormLabel>{formLabel}</FormLabel>
             <FormControl>
-              <Input placeholder={inputPlaceholder} {...field} />
+              {type === "number" ? (
+                <Input
+                  type="number"
+                  placeholder={inputPlaceholder}
+                  value={field.value}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    field.onChange(Number(value));
+                  }}
+                />
+              ) : (
+                <Input type="text" placeholder={inputPlaceholder} {...field} />
+              )}
             </FormControl>
             <FormMessage />
           </FormItem>
