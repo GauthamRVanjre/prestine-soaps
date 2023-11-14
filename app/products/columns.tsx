@@ -102,9 +102,9 @@ export const columns: ColumnDef<Products>[] = [
               </SheetHeader>
               <Details
                 details={
-                  product.chocolateProduct != null
-                    ? product.chocolateProduct
-                    : product.soapProduct
+                  product.chocolateProductItems
+                    ? product.chocolateProductItems
+                    : product.soapProductItems
                 }
               />
             </SheetContent>

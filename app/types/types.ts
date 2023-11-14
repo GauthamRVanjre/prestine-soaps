@@ -1,11 +1,13 @@
+import { JsonValue } from "@prisma/client/runtime/library";
+
 export type Products = {
   id: string;
   productName: string;
   productCategory: string;
-  createdDate: string;
-  costPrice: string;
-  chocolateProduct: chocolateProductTypes;
-  soapProduct: soapProductTypes;
+  createdDate: Date;
+  costPrice: number | null;
+  soapProductItems: soapProductTypes;
+  chocolateProductItems: chocolateProductTypes;
 };
 
 export type chocolateProductTypes = {

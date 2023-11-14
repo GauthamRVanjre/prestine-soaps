@@ -1,161 +1,98 @@
-import { Products } from "@/app/types/types";
 import prisma from "@/prisma/prisma";
+
 type SoapProductItems = {
   soapBase: string;
-  soapBasePrice: string;
+  soapBasePrice: number; // Changed to number
   EO: string;
-  EOPrice: string;
+  EOPrice: number; // Changed to number
   FO: string;
-  FOPrice: string;
+  FOPrice: number; // Changed to number
   oils: string;
-  oilPrice: string;
+  oilPrice: number; // Changed to number
   clay: string;
-  clayPrice: string;
+  clayPrice: number; // Changed to number
   Bottles: string;
-  BottlePrice: string;
+  BottlePrice: number; // Changed to number
   wrappingPapers: string;
-  wrappingPapersPrice: string;
+  wrappingPapersPrice: number; // Changed to number
   packingBags: string;
-  packingBagsPrice: string;
+  packingBagsPrice: number; // Changed to number
 };
 
-type ChocolateProductItems = {
+type chocolateProductsItems = {
   chocolateEO: string;
-  chocolateEOPrice: string;
+  chocolateEOPrice: number; // Changed to number
   dryFruits: string;
-  dryFruitsPrice: string;
+  dryFruitsPrice: number; // Changed to number
   milkMaid: string;
-  milkMaidPrice: string;
+  milkMaidPrice: number; // Changed to number
   coconutPowder: string;
-  coconutPowderPrice: string;
+  coconutPowderPrice: number; // Changed to number
   chocolateWrappingPaper: string;
-  chocolateWrappingPaperPrice: string;
+  chocolateWrappingPaperPrice: number; // Changed to number
   chocolateMould: string;
-  chocolateMouldPrice: string;
+  chocolateMouldPrice: number; // Changed to number
   chocolatePackingBags: string;
-  chocolatePackingBagsPrice: string;
+  chocolatePackingBagsPrice: number; // Changed to number
 };
 
 type RequestBody = {
   productName: string;
   productCategory: "Chocolate" | "Soap";
   soapProductItems?: SoapProductItems;
-  chocolateProductItems?: ChocolateProductItems;
+  chocolateProductsItems?: chocolateProductsItems;
+  costPrice: number;
 };
 
-type productType = {
+type productData = {
   productName: string;
   productCategory: "Chocolate" | "Soap";
-  soapProduct?: { connect: { id: string } };
-  chocolateProduct?: { connect: { id: string } };
+  soapProductItems?: SoapProductItems;
+  chocolateProductItems?: chocolateProductsItems;
+  costPrice: number;
 };
 
 export async function POST(req: Request, res: Response) {
   const values: RequestBody = await req.json();
+  console.log(values);
 
   try {
     await prisma.$connect();
 
-    let chocolateProduct;
-    let soapProduct;
-    if (values.productCategory === "Chocolate") {
-      chocolateProduct = await prisma.chocolateProductItems.create({
-        data: {
-          chocolateEO: values?.chocolateProductItems?.chocolateEO,
-          chocolateEOPrice: values?.chocolateProductItems?.chocolateEOPrice,
-          dryFruits: values?.chocolateProductItems?.dryFruits,
-          dryFruitsPrice: values?.chocolateProductItems?.dryFruitsPrice,
-          milkMaid: values?.chocolateProductItems?.milkMaid,
-          milkMaidPrice: values?.chocolateProductItems?.milkMaidPrice,
-          coconutPowder: values?.chocolateProductItems?.coconutPowder,
-          coconutPowderPrice: values?.chocolateProductItems?.coconutPowderPrice,
-          chocolateWrappingPaper:
-            values?.chocolateProductItems?.chocolateWrappingPaper,
-          chocolateWrappingPaperPrice:
-            values?.chocolateProductItems?.chocolateWrappingPaperPrice,
-          chocolateMould: values?.chocolateProductItems?.chocolateMould,
-          chocolateMouldPrice:
-            values?.chocolateProductItems?.chocolateMouldPrice,
-          chocolatePackingBags:
-            values?.chocolateProductItems?.chocolatePackingBags,
-          chocolatePackingBagsPrice:
-            values?.chocolateProductItems?.chocolatePackingBagsPrice,
-        },
-      });
-    }
+    let productData: productData = {
+      productName: values.productName,
+      productCategory: values.productCategory,
+      costPrice: values.costPrice,
+    };
     if (values.productCategory === "Soap") {
-      soapProduct = await prisma.soapProductItems.create({
-        data: {
-          soapBase: values?.soapProductItems?.soapBase,
-          soapBasePrice: values?.soapProductItems?.soapBasePrice,
-          EO: values?.soapProductItems?.EO,
-          EOPrice: values?.soapProductItems?.EOPrice,
-          FO: values?.soapProductItems?.FO,
-          FOPrice: values?.soapProductItems?.FOPrice,
-          oils: values?.soapProductItems?.oils,
-          oilPrice: values?.soapProductItems?.oilPrice,
-          clay: values?.soapProductItems?.clay,
-          clayPrice: values?.soapProductItems?.clayPrice,
-          Bottles: values?.soapProductItems?.Bottles,
-          BottlePrice: values?.soapProductItems?.BottlePrice,
-          wrappingPapers: values?.soapProductItems?.wrappingPapers,
-          wrappingPapersPrice: values?.soapProductItems?.wrappingPapersPrice,
-          packingBags: values?.soapProductItems?.packingBags,
-          packingBagsPrice: values?.soapProductItems?.packingBagsPrice,
-        },
-      });
+      productData.soapProductItems = values.soapProductItems;
+    } else if (values.productCategory === "Chocolate") {
+      productData.chocolateProductItems = values.chocolateProductsItems;
     }
 
-    let product;
-    if (values.productCategory === "Chocolate") {
-      product = await prisma.product.create({
-        data: {
-          productName: values.productName,
-          productCategory: values.productCategory,
-          chocolateProduct: {
-            connect: {
-              id: chocolateProduct?.id,
-            },
-          },
-        },
-      });
-    } else {
-      product = await prisma.product.create({
-        data: {
-          productName: values.productName,
-          productCategory: values.productCategory,
-          soapProduct: {
-            connect: {
-              id: soapProduct?.id,
-            },
-          },
-        },
-      });
-    }
-    console.log("product", product);
+    // Create product
+    const product = await prisma.product.create({
+      data: productData,
+    });
+
     return new Response(JSON.stringify(product), { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify(error), {
-      status: 500,
-    });
+    console.error("Error:", error);
+    return new Response(JSON.stringify(error), { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
 }
 
-export async function GET(req: Request, res: Response) {
+export async function GET() {
   try {
     await prisma.$connect();
 
-    const products = await prisma.product.findMany({
-      include: {
-        soapProduct: true,
-        chocolateProduct: true,
-      },
-    });
+    const products = await prisma.product.findMany();
 
     return new Response(JSON.stringify(products), { status: 200 });
   } catch (error) {
+    console.error("Error:", error);
     return new Response(JSON.stringify(error), { status: 500 });
   } finally {
     await prisma.$disconnect();
