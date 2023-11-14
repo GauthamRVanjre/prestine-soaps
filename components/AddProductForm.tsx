@@ -9,6 +9,7 @@ import CustomFormField from "./CustomFormField";
 
 import CustomDropdownMenu from "./CustomDropdownMenu";
 import { ScrollArea } from "./ui/scroll-area";
+import { toast } from "react-hot-toast";
 
 const AddProductForm = () => {
   const form = useForm<z.infer<typeof productForm>>({
@@ -93,12 +94,14 @@ const AddProductForm = () => {
         body: JSON.stringify(valuesToSend),
       });
       if (response.ok) {
-        console.log("product added successfully");
+        toast.success("product added successfully");
       } else {
-        console.log("product not added successfully");
+        toast.error("something went wrong!");
       }
     } catch (error) {
-      console.log("something wnet wrong");
+      toast.error("something went wrong!");
+    } finally {
+      form.reset();
     }
   }
 
