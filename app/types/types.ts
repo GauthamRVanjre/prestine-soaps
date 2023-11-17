@@ -57,6 +57,7 @@ export type orders = {
 export type itemsOrdered = {
   quantity: number;
   product: itemsOrderedProductType;
+  sellingPrice: number;
 };
 
 export type itemsOrderedProductType = {

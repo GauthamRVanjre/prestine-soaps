@@ -63,17 +63,13 @@ export const orderTableColumns: ColumnDef<orders>[] = [
     header: "total selling price",
     cell: ({ row }) => {
       const order = row.original;
-      let sellingPrice = 0;
-
-      let totalCostPrice = 0;
+      let totalSellingPrice = 0;
 
       order.orderItems.map((item) => {
-        totalCostPrice += item.product.costPrice * item.quantity;
+        totalSellingPrice += item.sellingPrice;
       });
 
-      sellingPrice = 2 * totalCostPrice;
-
-      return <div>{sellingPrice}</div>;
+      return <div>{totalSellingPrice}</div>;
     },
   },
 ];

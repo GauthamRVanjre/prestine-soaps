@@ -5,6 +5,7 @@ type RequestBody = {
   items: Array<{
     productName: string;
     quantity: number;
+    sellingPrice: number;
   }>;
 };
 
@@ -23,7 +24,11 @@ export async function POST(req: Request, res: Response) {
 
     // Create order items
     const orderItems = values.items.map(
-      async (item: { productName: string; quantity: number }) => {
+      async (item: {
+        productName: string;
+        quantity: number;
+        sellingPrice: number;
+      }) => {
         const product = await prisma.product.findUnique({
           where: {
             productName: item.productName,
@@ -34,11 +39,18 @@ export async function POST(req: Request, res: Response) {
           throw new Error(`Product with name ${item.productName} not found`);
         }
 
+        let productSellingPrice = item.sellingPrice
+          ? item.sellingPrice * item.quantity
+          : product?.costPrice
+          ? (product.costPrice + 100) * item.quantity
+          : 100 * item.quantity;
+
         return prisma.orderItem.create({
           data: {
             quantity: item.quantity,
             orderId: order.id,
             productId: product.id,
+            sellingPrice: productSellingPrice,
           },
         });
       }
@@ -76,6 +88,7 @@ export async function GET(req: Request, res: Response) {
                 costPrice: true,
               },
             },
+            sellingPrice: true,
           },
         },
       },
