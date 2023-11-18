@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import AddOrderForm from "./AddOrderForm";
+import NewOrderForm from "./newOrderForm";
 
 const AddOrderDialog = () => {
   return (
@@ -18,7 +19,8 @@ const AddOrderDialog = () => {
           <div className="border p-2 hover:bg-gray-200">Add new Product</div>
         </DialogTrigger>
         <DialogContent>
-          <AddOrderForm />
+          {/* <AddOrderForm /> */}
+          <NewOrderForm />
         </DialogContent>
       </Dialog>
     </>
