@@ -106,7 +106,7 @@ const AddProductForm = () => {
   }
 
   return (
-    <ScrollArea className="h-[400px] rounded-md border p-6 overflow-x-auto overflow-y-auto">
+    <ScrollArea className="h-[400px] rounded-md p-6 overflow-x-auto overflow-y-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2">
           <CustomFormField

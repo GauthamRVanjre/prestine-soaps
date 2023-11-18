@@ -76,3 +76,42 @@
     @apply bg-background text-foreground;
   }
 }
+
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.order-items-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.order-table th,
+.order-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.order-table th {
+  /* Green background color for header */
+  color: white;
+}
+
+.order-table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Light gray background color for even rows */
+}
+
+.order-table tr:hover {
+  background-color: #ddd; /* Dark gray background color on hover */
+}

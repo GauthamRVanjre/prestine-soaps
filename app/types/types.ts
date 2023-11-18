@@ -47,3 +47,20 @@ export type soapProductTypes = {
   packingBags: string;
   packingBagsPrice: string;
 };
+
+export type orders = {
+  id: string;
+  customerName: string;
+  orderItems: Array<itemsOrdered>;
+};
+
+export type itemsOrdered = {
+  quantity: number;
+  product: itemsOrderedProductType;
+  sellingPrice: number;
+};
+
+export type itemsOrderedProductType = {
+  productName: string;
+  costPrice: number;
+};
