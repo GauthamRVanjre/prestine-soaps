@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
 import { Products } from "@/app/types/types";
+import { ScrollArea } from "./ui/scroll-area";
+import toast from "react-hot-toast";
 
 type OrderItem = {
   productName: string;
@@ -60,6 +62,25 @@ const NewOrderForm: React.FC = () => {
       alert("orderItems cannot be null");
     }
 
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        body: JSON.stringify({
+          customerName,
+          items: orderItems,
+        }),
+      });
+      if (response.ok) {
+        toast.success("order added successfully");
+      } else {
+        toast.error("something went wrong!");
+      }
+    } catch (error) {
+      toast.error("something went wrong!");
+    } finally {
+      // form.reset();
+    }
+
     console.log({
       customerName,
       orderItems,
@@ -91,6 +112,7 @@ const NewOrderForm: React.FC = () => {
                 <option value="" disabled>
                   Select a product
                 </option>
+
                 {products.map((product) => (
                   <option key={product.id} value={product.productName}>
                     {product.productName}
