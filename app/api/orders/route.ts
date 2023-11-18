@@ -19,6 +19,7 @@ export async function POST(req: Request, res: Response) {
     const order = await prisma.orders.create({
       data: {
         customerName: values.customerName,
+        status: "InProcess",
       },
     });
 

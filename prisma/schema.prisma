@@ -34,6 +34,12 @@ model Orders {
   customerName  String
   createdAt     DateTime @default(now())
   orderItems    OrderItem[]
+  status        Status
+}
+
+enum Status {
+  InProcess
+  Done
 }
 
 model OrderItem {

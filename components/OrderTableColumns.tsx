@@ -2,25 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Products, orders } from "../app/types/types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useRouter } from "next/router";
-import { Button } from "@/components/ui/button";
-import { LinkIcon } from "lucide-react";
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  SheetContent,
-  Sheet,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetDescription,
-} from "@/components/ui/sheet";
-import Details from "@/components/Details";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import EditOrderForm from "./EditOrderForm";
 
 export const orderTableColumns: ColumnDef<orders>[] = [
   {
@@ -70,6 +53,27 @@ export const orderTableColumns: ColumnDef<orders>[] = [
       });
 
       return <div>{totalSellingPrice}</div>;
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const product = row.original;
+      //add actions here
+      return (
+        <>
+          <Dialog>
+            <DialogTrigger>
+              <div className="border p-2 hover:bg-gray-200">
+                Add new Product
+              </div>
+            </DialogTrigger>
+            <DialogContent>
+              <EditOrderForm />
+            </DialogContent>
+          </Dialog>
+        </>
+      );
     },
   },
 ];
