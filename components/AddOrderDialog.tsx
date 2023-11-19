@@ -15,7 +15,7 @@ const AddOrderDialog = () => {
     <>
       <Dialog>
         <DialogTrigger>
-          <div className="border p-2 hover:bg-gray-200">Add new Product</div>
+          <div className="border p-2 hover:bg-gray-200">Add new Order</div>
         </DialogTrigger>
         <DialogContent>
           <NewOrderForm />

@@ -39,6 +39,7 @@ type chocolateProductsItems = {
 type RequestBody = {
   productName: string;
   productCategory: "Chocolate" | "Soap";
+  productImage: string;
   soapProductItems?: SoapProductItems;
   chocolateProductsItems?: chocolateProductsItems;
   costPrice: number;
@@ -47,6 +48,7 @@ type RequestBody = {
 type productData = {
   productName: string;
   productCategory: "Chocolate" | "Soap";
+  productImage: string;
   soapProductItems?: SoapProductItems;
   chocolateProductItems?: chocolateProductsItems;
   costPrice: number;
@@ -61,6 +63,7 @@ export async function POST(req: Request, res: Response) {
     let productData: productData = {
       productName: values.productName,
       productCategory: values.productCategory,
+      productImage: values.productImage,
       costPrice: values.costPrice,
     };
     if (values.productCategory === "Soap") {

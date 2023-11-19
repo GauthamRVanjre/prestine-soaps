@@ -21,6 +21,7 @@ interface CustomDropDownProps {
   formName: string;
   formLabel: string;
   selectPlaceholder: string;
+  selectItems?: Array<String>[];
 }
 
 const CustomDropdownMenu: React.FC<CustomDropDownProps> = ({
@@ -28,6 +29,7 @@ const CustomDropdownMenu: React.FC<CustomDropDownProps> = ({
   formLabel,
   formName,
   selectPlaceholder,
+  selectItems,
 }) => {
   return (
     <>

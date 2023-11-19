@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -6,17 +6,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { productForm } from "@/lib/productFormValidator";
 import { number, z } from "zod";
 import CustomFormField from "./CustomFormField";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 import CustomDropdownMenu from "./CustomDropdownMenu";
 import { ScrollArea } from "./ui/scroll-area";
 import { toast } from "react-hot-toast";
 
 const AddProductForm = () => {
+  const [fileName, setFileName] = React.useState("");
+  const [imageVector, setImageVector] = React.useState("");
+  const [imageTitle, setImageTitle] = React.useState("");
   const form = useForm<z.infer<typeof productForm>>({
     resolver: zodResolver(productForm),
     defaultValues: {
       productName: "",
       productCategory: "",
+      productImage: "",
       soapProductItems: {
         soapBase: "",
         soapBasePrice: 0, // Changed to 0
@@ -87,6 +99,7 @@ const AddProductForm = () => {
     const valuesToSend = {
       ...values,
       costPrice: costPrice, // Replace calculateCostPrice with your actual calculation logic
+      productImage: imageVector,
     };
     try {
       const response = await fetch("/api/products", {
@@ -102,6 +115,22 @@ const AddProductForm = () => {
       toast.error("something went wrong!");
     } finally {
       form.reset();
+    }
+  }
+
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImageVector(base64String);
+        setImageTitle(new Date().toISOString());
+      };
+    } else {
+      setImageVector("");
     }
   }
 
@@ -121,6 +150,28 @@ const AddProductForm = () => {
             formName="productCategory"
             formLabel="Enter product Category"
             selectPlaceholder="Please select appropriate category.."
+          />
+
+          <FormField
+            control={form.control}
+            name="productImage"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="file"
+                    onChange={handleImageChange}
+                    placeholder="Report..."
+                    width={100}
+                    // {...field}
+                    required
+                  />
+                </FormControl>
+                <FormLabel className="ml-2">{fileName || ""}</FormLabel>
+
+                <FormMessage />
+              </FormItem>
+            )}
           />
 
           {categoryValue === "Soap" ? (
