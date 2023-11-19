@@ -21,6 +21,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import Details from "@/components/Details";
+import Image from "next/image";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -44,6 +45,22 @@ export const columns: ColumnDef<Products>[] = [
       } else {
         return <div>{product.productCategory}</div>;
       }
+    },
+  },
+  {
+    accessorKey: "productImage",
+    header: "Product Image",
+    cell: ({ row }) => {
+      const product = row.original;
+
+      return (
+        <Image
+          src={product.productImage}
+          width={100}
+          height={100}
+          alt="product image"
+        />
+      );
     },
   },
 
