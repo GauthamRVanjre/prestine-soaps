@@ -41,6 +41,7 @@ const chocolateProductItemsSchema = z.object({
 export const productForm = z.object({
   productName: z.string().nonempty("name is required"),
   productCategory: z.string().nonempty("category is required"),
+  productImage: z.string(),
 
   soapProductItems: soapProductItemsSchema,
 

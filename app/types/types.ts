@@ -4,6 +4,7 @@ export type Products = {
   id: string;
   productName: string;
   productCategory: string;
+  productImage: string;
   createdDate: Date;
   costPrice: number | null;
   soapProductItems: soapProductTypes;
@@ -51,6 +52,7 @@ export type soapProductTypes = {
 export type orders = {
   id: string;
   customerName: string;
+  status: string;
   orderItems: Array<itemsOrdered>;
 };
 

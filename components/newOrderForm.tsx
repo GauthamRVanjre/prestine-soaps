@@ -78,7 +78,8 @@ const NewOrderForm: React.FC = () => {
     } catch (error) {
       toast.error("something went wrong!");
     } finally {
-      // form.reset();
+      setCustomerName("");
+      setOrderItems([]);
     }
 
     console.log({
